@@ -1,21 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
+	[Serializable]
 	public class PositionSaver : MonoBehaviour
 	{
+		[Serializable]
 		public struct Data
 		{
 			public Vector3 Position;
 			public float Time;
 		}
-
+		[SerializeField, ReadOnly, Tooltip("Use context menu \"Create File\"")]
 		private TextAsset _json;
 
-		public List<Data> Records { get; private set; }
+		[field: SerializeField, HideInInspector] public List<Data> Records { get; private set; }
 
 		private void Awake()
 		{
@@ -96,6 +99,14 @@ namespace DefaultNamespace
 		private void OnDestroy()
 		{
 			//todo logic...
+			if (_json == null) return;
+
+			var text = JsonUtility.ToJson(this, true);
+			var path = UnityEditor.AssetDatabase.GetAssetPath(_json);
+			File.WriteAllText(path, text);
+			UnityEditor.EditorUtility.SetDirty(_json);
+			UnityEditor.AssetDatabase.SaveAssets();
+			UnityEditor.AssetDatabase.Refresh();
 		}
 #endif
 	}

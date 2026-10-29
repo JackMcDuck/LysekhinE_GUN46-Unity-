@@ -11,7 +11,9 @@ namespace DefaultNamespace
 		
 		//todo comment: Что произойдёт, если _delay > _duration?
 		//тогда скрипт запишет только стартовые значения
+		[SerializeField, Range(0.2f, 1f)]
 		private float _delay = 0.5f;
+		[SerializeField, Min(0.2f)]
 		private float _duration = 5f;
 
 		private void Start()
@@ -20,6 +22,10 @@ namespace DefaultNamespace
 			// Update выполняется каждый кадр, лишено смысла искать компонент, если можно единожды сохранить его в переменную
 			_save = GetComponent<PositionSaver>();
 			_save.Records.Clear();
+			if(_delay > _duration)
+			{
+				_duration = _delay * 5;
+			}
 		}
 
 		private void Update()
