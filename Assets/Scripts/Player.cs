@@ -8,15 +8,11 @@ namespace Netologia.Homework
 		private bool _ready;
 		private Rigidbody _ball;
 		
-		[SerializeField]
-		private Rigidbody _ballPrefab;
-		[SerializeField]
-		private float _startVelocity;
-		[SerializeField]
-		private float _lifetime;
-
-		[SerializeField]
-		private float _respawnDelay;
+		[SerializeField] private Rigidbody _ballPrefab;
+		[SerializeField] private float _startVelocity;
+		[SerializeField] private float _lifetime;
+		[SerializeField] private float _respawnDelay;
+		[SerializeField] private Material _material;
 
 		private void Update()
 		{
@@ -42,6 +38,8 @@ namespace Netologia.Homework
 		{
 			_ball = Instantiate(_ballPrefab, transform);
 			_ball.isKinematic = true;
+			//_ball.AddComponent<MeshRenderer>().material = _material;
+			_ball.GetComponent<MeshRenderer>().material = _material;
 			_ready = true;
 		}
 
